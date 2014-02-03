@@ -44,6 +44,12 @@ public class RestChannelHandler extends ChannelHandlerAdapter {
         if (msg instanceof HttpRequest) {
             final HttpRequest request = (HttpRequest) msg;
             final HttpMethod method = request.getMethod();
+            String uri = request.getUri();
+            // hack to get Pipe configuration
+            if (uri.startsWith("/buddies")) {
+                uri = uri.replace("/buddies", "");
+                request.setUri(uri);
+            }
             final HttpResponse response;
             if (method.equals(GET)) {
                 response = restProcessor.processGet(request, ctx);
